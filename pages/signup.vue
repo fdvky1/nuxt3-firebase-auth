@@ -1,4 +1,3 @@
-<!-- pages/signup.vue -->
 <template>
     <div>
       <h1>Sign Up</h1>
@@ -12,7 +11,6 @@
   
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useNuxtApp } from '#app';
 import { createUserWithEmailAndPassword, getIdToken } from 'firebase/auth';
 
 const email = ref('');
@@ -25,10 +23,8 @@ const signup = async () => {
         const userCredential = await createUserWithEmailAndPassword($auth, email.value, password.value);
         const idToken = await getIdToken(userCredential.user);
 
-        // Simpan token ke cookie
         document.cookie = `token=${idToken}; path=/;`;
 
-        // Arahkan ke halaman utama setelah berhasil signup
         navigateTo('/');
     } catch (error) {
         console.error('Signup failed:', error);
