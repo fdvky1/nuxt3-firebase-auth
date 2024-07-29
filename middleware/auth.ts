@@ -6,6 +6,7 @@ import cookie from 'cookie';
 export default defineNuxtRouteMiddleware(async (to, from) => {
   if (!import.meta.server) return;
 
+  const { public: config} = useRuntimeConfig();
   const headers = useRequestHeaders(['cookie']);
   const cookies = cookie.parse(headers.cookie || '');
   const idToken = cookies.token;
@@ -15,7 +16,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   }
 
   try {
-    const response = await axios.post('http://localhost:3000/api/verify-token', { idToken });
+    const response = await axios.post(`${config.APP_URL}/api/verify-token`, { idToken });
 
     if (!response.data.valid) {
       throw new Error(response.data.error);
